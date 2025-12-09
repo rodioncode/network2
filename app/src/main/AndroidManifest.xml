@@ -8,7 +8,7 @@
         android:label="Random Dog App"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="com.example.network1.old.MainActivity"
+        <activity android:name="com.example.network1.libs.ActivityProducts"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
