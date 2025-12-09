@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
+import com.example.network1.libs.network.ApiService
 import com.example.network1.libs.network.RetrofitClient
+import com.example.network1.libs.network.httpClientAndroid
 import com.google.gson.Gson
 import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
@@ -26,13 +28,16 @@ import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.Json.Default.encodeToString
+import kotlin.text.get
 import kotlin.text.get
 
 class ActivityProducts : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private val api = RetrofitClient.api
-
+    val ktorApi = ApiService(httpClientAndroid)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
@@ -41,36 +46,25 @@ class ActivityProducts : AppCompatActivity() {
 
         lifecycleScope.launch {
             val products = api.getProducts()
+
             recyclerView.adapter = ProductAdapter(products) { product ->
                 val intent = Intent(this@ActivityProducts, ProductDetailActivity::class.java)
                 intent.putExtra("id", product.id)
                 startActivity(intent)
             }
         }
-        val jsonString = "{\"id\": \"1\", \"name\": \"John\", \"age\": 25}"
 
-        val gson = Gson()
-        val user: User = gson.fromJson(jsonString, User::class.java)
-        val json: String = gson.toJson(user)
-
-        data class User(val id: Int, val name: String)
-
-        val moshi = Moshi.Builder().build()
-        val adapter = moshi.adapter(User::class.java)
-        val json2 = """{"id":1,"name":"Alex"}"""
-        val user2 = adapter.fromJson(json2) // User(1, "Alex")
-        val jsonBack = adapter.toJson(user2) // {"id":1,"name":"Alex"}
 
         val imageView: ImageView = findViewById(R.id.imageView)
 
-        Glide.with(this)
-            .load("https://example.com/image.jpg")
+        /*Glide.with(this)
+            .load("https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_t.png")
             .placeholder(R.drawable.ic_launcher_background)
             .error(R.drawable.ic_launcher_background)
             .circleCrop()
             .into(imageView)
-
-        imageView.load("https://example.com/image.jpg") {
+*/
+        imageView.load("https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_t.png") {
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
             transformations(CircleCropTransformation())
@@ -78,9 +72,9 @@ class ActivityProducts : AppCompatActivity() {
     }
 
     fun toJson() {
-        val json = kotlinx.serialization.json.Json.encodeToString(User2(1, "Alex"))
+        val json = encodeToString(User2(1, "Alex"))
         val user =
-            kotlinx.serialization.json.Json.decodeFromString<User2>("""{"id":1,"name":"Alex"}""")
+            decodeFromString<User2>("""{"id":1,"name":"Alex"}""")
     }
 
 }

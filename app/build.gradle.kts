@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
-
     kotlin("plugin.serialization") version "2.1.21"
 }
 
@@ -43,15 +41,19 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.coil)
-    implementation(libs.glide)
-    ksp (libs.compiler)
-    implementation(libs.retrofit)
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+
     implementation(libs.converter.gson)
+
     implementation(libs.converter.moshi)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+
+    implementation(libs.coil)
+    implementation(libs.glide)
+
     // OkHttp + Logging
+    implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
