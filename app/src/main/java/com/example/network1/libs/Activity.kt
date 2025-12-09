@@ -91,3 +91,4 @@ val client = HttpClient(Android) {
 }
 
 val products: List<Product> = client.get("https://fakestoreapi.com/products")
+val products: List<Product> = client.get("https://fakestoreapi.com/products")
